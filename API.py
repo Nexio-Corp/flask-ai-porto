@@ -7,16 +7,22 @@ from keras.preprocessing import image
 
 app = Flask(__name__)
 
+model_exist = os.path.isfile('modelo_treinado.h5')
+if not model_exist:
+    print('O modelo não foi encontrado, por favor baixe o arquivo em https://drive.google.com/uc?export=download&id=1warP-KTuwYAp4jTmYQsYOxEHPu4OTd25')
+    exit(1)
+
 # Carregar o modelo Keras
 model = load_model('modelo.h5')
 model.make_predict_function()  # Necessário para evitar erros no TensorFlow
 
 
 def preprocess_image(image_path):
-    img = image.load_img(image_path, target_size=(224, 224)) # Mesmo tamanho usado no treinamento do modelo
+    # Mesmo tamanho usado no treinamento do modelo
+    img = image.load_img(image_path, target_size=(224, 224))
     img = image.img_to_array(img)
     img = np.expand_dims(img, axis=0)
-    img = img/255.0 
+    img = img/255.0
     return img
 
 
@@ -51,4 +57,4 @@ def predict():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8000)
