@@ -4,9 +4,9 @@ import numpy as np
 import os
 from keras.models import load_model
 from keras.preprocessing import image
-
+from flask_cors import cross_origin, CORS
 app = Flask(__name__)
-
+CORS(app)
 model_exist = os.path.isfile('modelo_treinado.h5')
 if not model_exist:
     print('O modelo não foi encontrado, por favor baixe o arquivo em https://drive.google.com/uc?export=download&id=1warP-KTuwYAp4jTmYQsYOxEHPu4OTd25')
@@ -27,6 +27,7 @@ def preprocess_image(image_path):
 
 
 @app.route('/predict', methods=['POST'])
+@cross_origin()
 def predict():
     # Verificar se o arquivo de imagem foi enviado com o nome 'image' no request
     if 'image' not in request.files:
@@ -52,8 +53,9 @@ def predict():
 
         # Deletar a imagem temporária
         os.remove(file_path)
-
-        return jsonify({'prediction': result})
+        response = jsonify({'prediction': result})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
 
 
 if __name__ == '__main__':
