@@ -30,9 +30,9 @@ def preprocess_image(image_path):
 @cross_origin()
 def predict():
     # Verificar se o arquivo de imagem foi enviado com o nome 'image' no request
+    print(request.files.keys())
     if 'image' not in request.files:
         return jsonify({'error': 'Nenhum arquivo enviado'})
-
     file = request.files['image']
 
     # Verificar se o arquivo foi enviado de fato
@@ -54,7 +54,6 @@ def predict():
         # Deletar a imagem temporária
         os.remove(file_path)
         response = jsonify({'prediction': result})
-        response.headers.add('Access-Control-Allow-Origin', '*')
         return response
 
 
