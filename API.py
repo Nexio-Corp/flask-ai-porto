@@ -13,7 +13,7 @@ if not model_exist:
     exit(1)
 
 # Carregar o modelo Keras
-model = load_model('modelo.h5')
+model = load_model('modelo_treinado.h5')
 model.make_predict_function()  # Necessário para evitar erros no TensorFlow
 
 
