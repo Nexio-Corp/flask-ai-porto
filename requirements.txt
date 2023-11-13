@@ -3,3 +3,4 @@ Numpy==1.23.3
 Keras==2.10.0
 Pillow==9.2.0
 flask-cors
+tensorflow
